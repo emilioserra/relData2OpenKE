@@ -16,6 +16,7 @@ The output includes the OpenKE files:
 - Train2id
 - Valid2id
 - Test2id
+- type_constrain.txt
 
 relData2OpenKE basically:
 - uses sample2EntitiesAndTriples.py, to deal with each sample of rel-data format, e.g. 5000.individuals, 5000.classes…
