@@ -10,7 +10,7 @@ They can be stored in an aux file for further treatment sucha as  removing repea
 
 
 
-@author: esf
+@author: Emilio Serrano and Thomas Lukasiewicz
 """
 
  

@@ -3,7 +3,7 @@ Created on Thu Sep  6 15:15:40 2018
 
 Class to deal with repeated entities in aux files obtained by sample2EntitiesAndTriples and assigning a numeric id from 0..entityNumber
 
-@author: esf
+@author: Emilio Serrano and Thomas Lukasiewicz
 """
 import json
 

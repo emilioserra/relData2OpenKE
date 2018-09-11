@@ -9,7 +9,7 @@ Returns OpenKE files:   relation2id.txt, entity2id, train2id.txt, valid2id.txt, 
 Literals omitted  (not clear if it makes senses with classical link prediction models, and dbpedia cases are empty).
 
 
-@author: Emilio Serrano
+@author: Emilio Serrano and Thomas Lukasiewicz
 """
 
 
@@ -28,7 +28,9 @@ import os
 #path with rel2data dev,test, and train directories
 pathForKB="C:/media/datasets oxford/Patrick 2018/dbpediaREDUCED" #"/home/serrano/dbpedia-5000"
 #outputfolder
-outputPath="C:/media/datasets oxford/Patrick 2018/toOpenKE" #/home/serrano/dbpediaToOpenKE
+#outputPath="C:/media/datasets oxford/Patrick 2018/toOpenKE" #/home/serrano/dbpediaToOpenKE
+outputPath="C:/media/datasets oxford/Patrick 2018/claros-5000-OKE" #/home/serrano/dbpediaToOpenKE
+
 
 #random seed to shuffle validation and testing data
 seed=123
@@ -153,6 +155,7 @@ if __name__ == '__main__':
     idm= generateIDMaps()
     generateOpenKEFiles(idm)
     removeAuxFiles()
+    writeConstraintFiles(outputPath)
     
     
     
