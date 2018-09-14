@@ -26,7 +26,7 @@ import os
 
 
 #path with rel2data dev,test, and train directories
-pathForKB="C:/media/datasets oxford/Patrick 2018/dbpedia-50" #"/home/serrano/dbpedia-5000"
+pathForKB="C:/media/datasets oxford/Patrick 2018/dbpedia-500" #"/home/serrano/dbpedia-5000"
 #outputfolder
 outputPath="C:/media/datasets oxford/Patrick 2018/relData2OpenKEOuput" #/home/serrano/dbpediaToOpenKE
 #outputPath="C:/media/datasets oxford/Patrick 2018/claros-5000-OKE" #/home/serrano/dbpediaToOpenKE
@@ -175,15 +175,14 @@ def checkRepetitionsInOpenKEFilesAndRemoveOverlappings():
 
     #check val and test triples in train to remove them
     overlapping= len(list(listTrain+listVal+listTest)) - len(list(set(listTrain+listVal+listTest)))
-    if(overlapping>0):
-        print("\t..." + str(overlapping) + " relations are repeated in training, validation, and testing! (wait for removal)")    
-        for tt in listTrain:
-            if tt in listVal:
-                listVal.remove(tt)
+    print("\t..." + str(overlapping) + " relations are repeated in training, validation, and testing!")    
+    listVal = list(set(listVal)- set(listTest) - set(listTrain) ) #remove in validation what is already in test or train
+    listTest = list(set(listTest)- set(listVal) - set(listTrain) )  #remove in test what is already in validation or train
+    overlapping= len(list(listTrain+listVal+listTest)) - len(list(set(listTrain+listVal+listTest)))
+    print("\t... OK, new overlapping: " + str(overlapping))
+
+ 
     
-        for tt in listTrain:
-            if tt in listTest:
-                listTest.remove(tt)
     
     #write files again
     writeToFile(listTrain,trainFile ,False,True,False)    
