@@ -25,4 +25,6 @@ relData2OpenKE basically:
 	- consider global identifiers for entities/relations/classes.
 - uses iDManager.py  to map entity/classes names to new IDs avoding repetitions 
 	- relData gives different identifiers to the same individuals/classes
+- check if there are repetitions in triples for training, or triples in training also present in validation or testing
+	- relData can have these repetitions
 - and generate the final OpenKE files.
