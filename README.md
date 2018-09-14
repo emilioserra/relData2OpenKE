@@ -23,8 +23,8 @@ relData2OpenKE basically:
 - objects of sample2EntitiesAndTriples for all samples are used to generate aux files that, among others,
 	-  consider class belonging as another simple relation,
 	- consider global identifiers for entities/relations/classes.
-- uses iDManager.py  to map entity/classes names to new IDs avoding repetitions 
-	- relData gives different identifiers to the same individuals/classes
-- check if there are repetitions in triples for training, or triples in training also present in validation or testing
-	- relData can have these repetitions
+- uses iDManager.py  to map entity/classes names to new IDs avoding repetitions. 
+	- relData gives different identifiers to the same individuals/classes.
+- check if there are repetitions in triples for training, or triples in training also present in validation or testing.
+	- relData can have these repetitions.
 - and generate the final OpenKE files.
