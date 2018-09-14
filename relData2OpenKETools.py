@@ -15,7 +15,8 @@ from os.path import isfile, join
  
 
 #write a list of list in a file (add true to add instead of remove file, number of elements TRue si se quiere añadir número de elementos a copiar)
-def writeToFile(listData,outputFile,add, numberOfElements=False):
+#split line can be set to false if no space added per line as done if a list of list is passed
+def writeToFile(listData,outputFile,add=False, numberOfElements=False, splitLine=True):
     addOrWrite='w'
     if add==True:
         addOrWrite='a'    
@@ -23,7 +24,10 @@ def writeToFile(listData,outputFile,add, numberOfElements=False):
         if numberOfElements:
             f.write( str(len(listData)) + '\n') 
         for line in listData:
-            f.write(" ".join(line) + '\n') #write rows separated with space
+            if(splitLine):
+                f.write(" ".join(line) + '\n') #write rows separated with space
+            else:
+                f.write(line + '\n') #write rows separated with space
                 
                 
  #f.write(str(len(listData)) + '\n') #write the number of entities id/relations id/ triples stored

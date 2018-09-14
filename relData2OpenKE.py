@@ -26,10 +26,10 @@ import os
 
 
 #path with rel2data dev,test, and train directories
-pathForKB="C:/media/datasets oxford/Patrick 2018/dbpediaREDUCED" #"/home/serrano/dbpedia-5000"
+pathForKB="C:/media/datasets oxford/Patrick 2018/dbpedia-50" #"/home/serrano/dbpedia-5000"
 #outputfolder
-#outputPath="C:/media/datasets oxford/Patrick 2018/toOpenKE" #/home/serrano/dbpediaToOpenKE
-outputPath="C:/media/datasets oxford/Patrick 2018/claros-5000-OKE" #/home/serrano/dbpediaToOpenKE
+outputPath="C:/media/datasets oxford/Patrick 2018/relData2OpenKEOuput" #/home/serrano/dbpediaToOpenKE
+#outputPath="C:/media/datasets oxford/Patrick 2018/claros-5000-OKE" #/home/serrano/dbpediaToOpenKE
 
 
 #random seed to shuffle validation and testing data
@@ -100,13 +100,10 @@ def generateOpenKEFiles(myiDManager):
         entities2.append([e2[1],idm.getNewIDFromEntityName(e2[1])])    
     writeToFile(entities2, outputPath + "/entity2id.txt" ,False,True)       
     
-    
-  
-    
-        
+          
     #train, validation, and testing. Aux are already in e1,e2, relation order... only the ids have to change
     #80% of infereable are added in train, 20% validation, 20% in testing AFTER SHUFFLE
-    triples = fileAsList(outputPath + "/triplesAux.txt")        
+    triples = fileAsList(outputPath + "/triplesAux.txt")     
     triples2=[]
     for t in triples:    
         t2=t.split()   
@@ -141,7 +138,7 @@ def generateOpenKEFiles(myiDManager):
     
     print("...OK")
 
-    
+
 def removeAuxFiles():
     print("Removing aux files...")
     os.remove( outputPath + "/relationsAux.txt")
@@ -150,14 +147,63 @@ def removeAuxFiles():
     os.remove( outputPath + "/triplesInfereableAux.txt")
     print("...OK")
     
+    
+#check repetitiosna in triples of train2id and remove overlappings with valid2id andtest2id
+#generateOpenKEFiles() is needed first so global identifiers are alreay there
+def checkRepetitionsInOpenKEFilesAndRemoveOverlappings():
+    print("Checking repetitions in triples and overlapping with validation and testing...")
+    
+    trainFile=outputPath + "/train2id.txt"
+    valFile=outputPath + "/valid2id.txt"
+    testFile=outputPath + "/test2id.txt"
+    #load list  
+    listTrain=fileAsList(trainFile) 
+    listVal=fileAsList(valFile)
+    listTest=fileAsList(testFile)
+    #remove first element  remove the first element with pop because it contains the number of triples
+    listTrain.pop(0)
+    listVal.pop(0)
+    listTest.pop(0)
+    
+    
+    #remove repetitions in lists, the order is lost  
+    listTrain=list(set(listTrain))
+    listVal=list(set(listVal))
+    listTest=list(set(listTest))
+    
+        
+
+    #check val and test triples in train to remove them
+    overlapping= len(list(listTrain+listVal+listTest)) - len(list(set(listTrain+listVal+listTest)))
+    if(overlapping>0):
+        print("\t..." + str(overlapping) + " relations are repeated in training, validation, and testing! (wait for removal)")    
+        for tt in listTrain:
+            if tt in listVal:
+                listVal.remove(tt)
+    
+        for tt in listTrain:
+            if tt in listTest:
+                listTest.remove(tt)
+    
+    #write files again
+    writeToFile(listTrain,trainFile ,False,True,False)    
+    writeToFile(listVal, valFile ,False,True,False)    
+    writeToFile(listTest, testFile,False,True,False)    
+    
+    print("...OK")  
+    
+    
 if __name__ == '__main__':
     generateAuxFiles()
     idm= generateIDMaps()
-    generateOpenKEFiles(idm)
-    removeAuxFiles()
+    generateOpenKEFiles(idm)    
+    checkRepetitionsInOpenKEFilesAndRemoveOverlappings()
     writeConstraintFiles(outputPath)
+    removeAuxFiles()    
     
-    
-    
-    #triplesV=valid2id()
-    #triplesT=test2id()
+    #code to check repetition in training
+    #checkRepetitionsInOpenKEFile(outputPath + "/train2id.txt")
+    #checkRepetitionsInOpenKEFile(outputPath + "/valid2id.txt")
+    #checkRepetitionsInOpenKEFile(outputPath + "/test2id.txt")
+ 
+
